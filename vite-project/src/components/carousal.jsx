@@ -12,7 +12,7 @@ import img2 from './carousal-images/2.jpg';
 import img3 from './carousal-images/3.jpg';
 import img4 from './carousal-images/4.jpg';
 
-import './style.css';
+import './carousal.css';
 
 // import required modules
 import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
@@ -29,9 +29,6 @@ export default function App() {
         modules={[Navigation, Pagination, Mousewheel, Keyboard]}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <img src="" alt="Slide 1" />
-        </SwiperSlide>
         <SwiperSlide>
           <img src={img1} alt="Slide 2" />
         </SwiperSlide>

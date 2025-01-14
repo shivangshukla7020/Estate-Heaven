@@ -1,49 +1,26 @@
-/* style.css */
+.navbar-dark .nav-item .nav-link {
+    color: #fff;
+}
 
-nav {
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem 2rem;
-  }
-  
-  nav .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  nav .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2d3748;
-  }
-  
-  nav .nav-links {
-    display: flex;
-    gap: 1rem;
-  }
-  
-  nav .nav-links a {
-    text-decoration: none;
-    color: #4a5568;
-    transition: color 0.3s;
-  }
-  
-  nav .nav-links a:hover {
-    color: #3182ce;
-  }
-  
-  nav .cta-button button {
-    padding: 0.5rem 1rem;
-    color: white;
-    background-color: #3182ce;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  nav .cta-button button:hover {
-    background-color: #2b6cb0;
-  }
-  
+.navbar-dark .nav-item .nav-link:hover {
+background-color: rgba(255, 255, 255, 0.1);
+transition: all 0.3s ease;
+border-radius: 0.25rem;
+color: #fff;
+}
+
+.fa-li {
+position: relative;
+left: 0;
+}
+
+.user-profile{
+    height: 2rem;
+}
+
+.logo{
+    height: 1rem;
+}
+
+
+
