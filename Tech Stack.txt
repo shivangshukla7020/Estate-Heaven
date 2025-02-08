@@ -1,0 +1,8 @@
+react+vite
+bootsrap
+tailwind
+Mongoose
+Express
+API Key-Based Authentication
+Azure
+webSocket
