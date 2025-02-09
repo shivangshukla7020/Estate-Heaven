@@ -1,10 +1,26 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import axios from 'axios'
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
   const location = useLocation();
   const isBuyPage = location.pathname === "/buy";
   const pages = ["Home", "Buy", "Sell", "Rent", "Agents", "Contact"];
+  const { isAuthenticated, setIsAuthenticated, loading } = useAuth();
+
+   // Logout function
+   const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:3000/logout", {}, { withCredentials: true });
+      setIsAuthenticated(false); // Instantly update state
+      setShowDropdown(false);
+      checkAuth(); // Ensure UI updates without refreshing
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
 
   return (
     <nav className="w-full bg-white p-4 shadow-md">
@@ -47,13 +63,27 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
 
         {/* Auth Buttons */}
         <div className="space-x-4">
-          <Link to="/login" className="text-gray-800 px-4 py-2 hover:text-blue-600 transition-colors">
-            Login
-          </Link>
-          <Link to="/signup" className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-            Sign Up
-          </Link>
-        </div>
+          {loading ? (
+            <span className="text-gray-500">Checking...</span>
+          ) : isAuthenticated ? (
+            <button 
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login" className="text-gray-800 px-4 py-2 hover:text-blue-600 transition-colors">
+                Login
+              </Link>
+              <Link to="/signup" className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                Sign Up
+              </Link>
+            </>
+          )}
+      </div>
+
       </div>
     </nav>
   );
