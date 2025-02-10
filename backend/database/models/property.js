@@ -7,6 +7,11 @@ const PropertySchema = new mongoose.Schema(
       required: [true, "Title is required"],
       trim: true,
     },
+    description: {
+      type: String,
+      trim: true,
+      maxlength: [1000, "Description cannot exceed 1000 characters"],
+    },
     location: {
       type: String,
       required: [true, "Location is required"],
@@ -37,14 +42,20 @@ const PropertySchema = new mongoose.Schema(
       required: [true, "Property type is required"],
     },
     images: {
-      type: [String],
+      type: [String], // Stores file paths (e.g., "uploads/1707609481234.jpg")
+      required: [true, "At least one image is required"],
       validate: {
         validator: function (arr) {
-          return arr.every((url) => typeof url === "string");
+          return arr.length > 0; // Ensure at least one image
         },
-        message: "Images must be an array of URLs",
+        message: "At least one image must be uploaded",
       },
     },
+    // owner: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "User", // References the 'User' model (if authentication is used)
+    //   required: true,
+    // },
     createdAt: {
       type: Date,
       default: Date.now,

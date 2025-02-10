@@ -5,6 +5,7 @@ const DBconnect = require('./database/DBconnect');
 const buyerRoutes = require('./routes/buyer');
 const authRoute = require('./routes/auth');
 const propertyRoute = require('./routes/property');
+const path = require("path");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(cookieParser()); // Middleware to parse cookies
 app.use(buyerRoutes);
 app.use(authRoute);
 app.use(propertyRoute);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Start Server
 const PORT = process.env.PORT || 3000;
