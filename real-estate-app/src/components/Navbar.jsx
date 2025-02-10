@@ -7,7 +7,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
   const location = useLocation();
   const isBuyPage = location.pathname === "/buy";
   const pages = ["Home", "Buy", "Sell", "Rent", "Agents", "Contact"];
-  const { isAuthenticated, setIsAuthenticated, loading } = useAuth();
+  const { isAuthenticated, setIsAuthenticated, loading, checkAuth } = useAuth();
 
    // Logout function
    const handleLogout = async () => {

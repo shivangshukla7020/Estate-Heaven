@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const DBconnect = require('./database/DBconnect');
 const buyerRoutes = require('./routes/buyer');
 const authRoute = require('./routes/auth');
+const propertyRoute = require('./routes/property');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cookieParser()); // Middleware to parse cookies
 // Define Routes
 app.use(buyerRoutes);
 app.use(authRoute);
+app.use(propertyRoute);
 
 // Start Server
 const PORT = process.env.PORT || 3000;

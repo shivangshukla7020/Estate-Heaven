@@ -1,35 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import home from '../assets/home.jpg';
 import googleIcon from '../assets/Icons/google2.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext"; // Import Auth Context
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [errorMessage, setErrorMessage] = useState();
+  const { checkAuth } = useAuth(); // Get checkAuth from context
+  const [email, setEmail] = useState(""); // Initialized state
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // Request for byuer login
-  async function handleBuyserSubmit(e){
+  // Handle login
+  async function handleBuyserSubmit(e) {
     e.preventDefault();
     try {
-        const response = await axios.post("http://localhost:3000/login", { email, password }, { withCredentials: true });
+        await axios.post("http://localhost:3000/login", { email, password }, { withCredentials: true });
         console.log("User logged in successfully");
+        checkAuth(); // 🔥 Ensure navbar updates
         navigate("/buy");
-
-    }catch (err) {
-        if (err.response && err.response.status === 400) {
-          setErrorMessage(err.response.data.message); // Display invalid email or password
-        } else {
-          setErrorMessage("Something went wrong. Please try again.");
-        }
+    } catch (err) {
+        setErrorMessage(err.response?.data?.message || "Something went wrong. Please try again.");
         console.error(err);
     }
   }
-
 
   return (
     <div className="relative w-full h-screen flex items-center justify-center">
@@ -47,18 +43,20 @@ const Login = () => {
         <p className="text-gray-600 text-center mt-2">Sign in to access your dashboard.</p>
 
         {/* Login Form */}
-        <form className="mt-6 space-y-4">
+        <form className="mt-6 space-y-4" onSubmit={handleBuyserSubmit}>
           <input 
             type="email" 
             placeholder="Email" 
             className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onChange={(e)=>setEmail(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input 
             type="password" 
             placeholder="Password" 
             className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onChange={(e)=>setPassword(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <div className="flex justify-between text-sm text-gray-600">
             <a href="#" className="hover:text-blue-600">Forgot password?</a>
@@ -69,7 +67,6 @@ const Login = () => {
           <button 
             type="submit" 
             className="w-full bg-blue-800 text-white p-3 rounded-lg hover:bg-blue-700 transition cursor-pointer"
-            onClick={handleBuyserSubmit}
           >
             Login
           </button>

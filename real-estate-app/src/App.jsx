@@ -5,6 +5,7 @@ import Signup from './pages/Signup';
 import Home from './pages/home';
 import Buy from './pages/Buy';
 import AuthProvider from "./context/AuthContext";
+import Sell from './pages/Sell';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path='/signup' element={<Signup/>}/>
           <Route path='/buy' element={<Buy/>}/>
+          <Route path='/sell' element={<Sell/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
