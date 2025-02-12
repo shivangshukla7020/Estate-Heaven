@@ -2,6 +2,11 @@
 
 Estate Heaven is a **MERN stack** real estate web app for browsing, searching, and filtering properties with **JWT authentication**, a **responsive UI**, and a **RESTful API**.
 
+![Img1](Images/1.png)
+![Img2](Images/2.png)
+![Img2](Images/3.png)
+
+
 ## 🚀 Features  
 ✅ Property Listings & Image Uploads  
 ✅ Advanced Search & Filtering  
