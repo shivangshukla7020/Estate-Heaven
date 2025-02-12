@@ -51,11 +51,11 @@ const PropertySchema = new mongoose.Schema(
         message: "At least one image must be uploaded",
       },
     },
-    // owner: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "User", // References the 'User' model (if authentication is used)
-    //   required: true,
-    // },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Buyer", // Reference the 'Buyer' model
+      required: true,
+    },
     createdAt: {
       type: Date,
       default: Date.now,

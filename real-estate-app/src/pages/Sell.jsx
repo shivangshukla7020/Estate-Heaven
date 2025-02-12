@@ -18,16 +18,40 @@ const Sell = () => {
     sqft: "",
     images: [],
   });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
+  // Check user authentication and associate the user (Buyer) with the property
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/check-auth", {
+          withCredentials: true, // Ensure cookies are sent
+        });
+
+        if (response.data.authenticated) {
+          setIsAuthenticated(true); // User is authenticated
+        } else {
+          navigate("/login"); // Redirect to login if not authenticated
+        }
+      } catch (error) {
+        console.error("Authentication check failed", error);
+        navigate("/login"); // Redirect on failure
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
+
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle image uploads
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-
-    // Generate preview URLs for images
     const imagePreviews = files.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
@@ -39,11 +63,10 @@ const Sell = () => {
     }));
   };
 
+  // Remove uploaded image
   const handleRemoveImage = (index) => {
     setFormData((prev) => {
-      // Revoke object URL to free memory
       URL.revokeObjectURL(prev.images[index].preview);
-
       return {
         ...prev,
         images: prev.images.filter((_, i) => i !== index),
@@ -51,18 +74,12 @@ const Sell = () => {
     });
   };
 
-  useEffect(() => {
-    // Cleanup function to revoke object URLs on component unmount
-    return () => {
-      formData.images.forEach((image) => URL.revokeObjectURL(image.preview));
-    };
-  }, [formData.images]);
-
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(""); // Reset any previous errors
 
     const formDataToSend = new FormData();
-
     formDataToSend.append("propertyType", propertyType);
     formDataToSend.append("title", formData.title);
     formDataToSend.append("location", formData.location);
@@ -71,13 +88,12 @@ const Sell = () => {
     formDataToSend.append("bathrooms", formData.bathrooms);
     formDataToSend.append("sqft", formData.sqft);
 
-    // Append actual image files to FormData
     formData.images.forEach((image) => {
       formDataToSend.append("images", image.file);
     });
 
     try {
-      await axios.post("http://localhost:3000/sell", formDataToSend, {
+      await axios.post("http://localhost:3000/property/sell", formDataToSend, {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -86,8 +102,14 @@ const Sell = () => {
       navigate("/buy");
     } catch (err) {
       console.error(err);
+      setErrorMessage("Failed to list property. Please try again.");
     }
   };
+
+  // If the user is not authenticated, render nothing until the check is complete
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <motion.div
@@ -141,6 +163,9 @@ const Sell = () => {
             <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
               List Your Property for Sale
             </h2>
+            {errorMessage && (
+              <p className="text-red-500 font-medium text-center">{errorMessage}</p>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <input type="text" name="title" placeholder="Property Title" value={formData.title} onChange={handleChange} className="w-full p-4 border rounded-lg focus:ring focus:ring-blue-300" required />
               <input type="text" name="location" placeholder="Location" value={formData.location} onChange={handleChange} className="w-full p-4 border rounded-lg focus:ring focus:ring-blue-300" required />

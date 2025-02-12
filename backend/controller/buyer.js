@@ -48,7 +48,7 @@ async function loginBuyer(req, res) {
 
         // Generate JWT token
         const token = jwt.sign(
-            { userId: user._id, email: user.email },
+            { buyerId: user._id, email: user.email },
             process.env.JWT_SECRET,
             { expiresIn: "7d" }
         );

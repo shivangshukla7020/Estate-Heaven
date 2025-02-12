@@ -1,5 +1,6 @@
 const multer = require("multer");
 const Property = require("../database/models/property");
+const jwt = require("jsonwebtoken");
 
 // Configure multer storage
 const storage = multer.diskStorage({
@@ -19,13 +20,33 @@ async function addProperty(req, res) {
     console.log("Request Body:", req.body);
     console.log("Uploaded Files:", req.files);
 
+    // Validate required fields
     if (!req.body.title || !req.body.location || !req.body.price || !req.body.bedrooms || !req.body.bathrooms || !req.body.sqft || !req.body.propertyType) {
       return res.status(400).json({ message: "All fields are required!" });
+    }
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "At least one image is required!" });
     }
 
     // Extract image file paths from multer
     const images = req.files.map((file) => file.path);
 
+    // Extract owner from JWT (assumes token is passed in cookies)
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "Authentication required!" });
+    }
+
+    let owner;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      owner = decoded.userId; // This will now reference the Buyer
+    } catch (error) {
+      return res.status(403).json({ message: "Invalid or expired token!" });
+    }
+
+    // Create a new property
     const newProperty = new Property({
       title: req.body.title,
       location: req.body.location,
@@ -35,13 +56,14 @@ async function addProperty(req, res) {
       sqft: req.body.sqft,
       propertyType: req.body.propertyType,
       images,
+      owner, // Associate property with the Buyer
     });
 
     await newProperty.save();
     res.status(201).json({ message: "Property listed successfully", property: newProperty });
   } catch (error) {
     console.error("Error:", error);
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
