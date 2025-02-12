@@ -25,7 +25,7 @@ app.use(cookieParser()); // Middleware to parse cookies
 // Define Routes
 app.use(buyerRoutes);
 app.use(authRoute);
-app.use(propertyRoute);
+app.use('/property',propertyRoute);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Start Server

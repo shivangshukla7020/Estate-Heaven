@@ -6,6 +6,7 @@ import Home from './pages/home';
 import Buy from './pages/Buy';
 import AuthProvider from "./context/AuthContext";
 import Sell from './pages/Sell';
+import PropertyDisplay from './components/PropertyDisplay';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path='/signup' element={<Signup/>}/>
           <Route path='/buy' element={<Buy/>}/>
           <Route path='/sell' element={<Sell/>}/>
+          <Route path="/property/:id" element={<PropertyDisplay />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

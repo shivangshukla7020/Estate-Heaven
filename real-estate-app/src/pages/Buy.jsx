@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PropertyCard from "../components/PropertyCard";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Buy/Sidebar";
@@ -21,7 +22,7 @@ const Buy = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch("http://localhost:3000/properties"); // Update if needed
+        const response = await fetch("http://localhost:3000/property/all"); // Update if needed
         const data = await response.json();
         setProperties(data);
       } catch (error) {
@@ -67,7 +68,9 @@ const Buy = () => {
           ) : filteredProperties.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProperties.map((property) => (
-                <PropertyCard key={property._id} property={property} />
+                <Link key={property._id} to={`/property/${property._id}`}>
+                  <PropertyCard property={property} />
+                </Link>
               ))}
             </div>
           ) : (

@@ -56,4 +56,16 @@ const getAllProperties = async (req, res) => {
   }
 };
 
-module.exports = { addProperty, upload, getAllProperties};
+const getProperty = async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+    res.json(property);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching property", error });
+  }
+};
+
+module.exports = { addProperty, upload, getAllProperties, getProperty};
