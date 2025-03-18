@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaUpload, FaTrash } from "react-icons/fa";
 import home from "../assets/home.jpg";

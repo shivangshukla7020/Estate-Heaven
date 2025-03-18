@@ -18,7 +18,7 @@ const Signup = () => {
     e.preventDefault();
     try {
         const response = await axios.post("http://localhost:3000/signup", { fullName, email, password }, { withCredentials: true });
-        console.log("User created successfully");
+        console.log(`User created successfully ${response}`);
         navigate("/login");
 
     }catch (err) {
@@ -132,13 +132,13 @@ const Signup = () => {
 
               <button 
                 type="submit" 
-                className="w-full bg-blue-800 text-white py-3 rounded-lg text-lg hover:bg-blue-700 transition"
+                className="w-full bg-blue-800 text-white py-3 rounded-lg text-lg hover:bg-blue-700 transition cursor-pointer"
                 onClick={handleBuyserSubmit}>
                     Register
               </button>
             </form>
             <div className="mt-6">
-              <button className="w-full flex items-center justify-center bg-red-600 text-white py-3 rounded-lg text-lg hover:bg-red-500 transition">
+              <button className="w-full flex items-center justify-center bg-red-600 text-white py-3 rounded-lg text-lg hover:bg-red-500 transition cursor-pointer">
                 <img src={googleIcon} alt="Google" className="w-6 h-6 mr-2" />
                 Sign Up with Google
               </button>
@@ -147,7 +147,7 @@ const Signup = () => {
             {/* Sign-up Link */}
             <p className="mt-4 text-center text-gray-600">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-600 font-medium hover:underline">
+            <Link to="/login" className="text-blue-600 font-medium hover:underline cursor-pointer">
                 Sign in
             </Link>
             </p>

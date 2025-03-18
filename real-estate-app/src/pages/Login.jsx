@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import home from '../assets/home.jpg';
 import googleIcon from '../assets/Icons/google2.png';
 import axios from 'axios';
